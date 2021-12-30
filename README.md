@@ -20,7 +20,7 @@ window.addEventListener('busCritical', function() {
 			busCritical.ajax(window.location.href, {
 				metod: 'post',
 				data: {bus_cache_critical:critical},
-				success: function(data){
+				success: function(data) {
 					//console.log(data);
 				}
 			});
