@@ -13,17 +13,19 @@ window.addEventListener('busCritical', function() {
 	busCritical.setting['html_all'] = true;
 	busCritical.setting['html_elements'] = ['font-face', 'keyframes', '*', '::after, ::before', ']'];
 
-	var critical = busCritical.critical('body');
+	setTimeout(function() {
+		var critical = busCritical.critical('body');
 
-	if (critical) {
-		busCritical.ajax(window.location.href, {
-			metod: 'post',
-			data: {bus_critical:critical},
-			success: function(data){
-				//console.log(data);
-			}
-		});
-	}
+		if (critical) {
+			busCritical.ajax(window.location.href, {
+				metod: 'post',
+				data: {bus_cache_critical:critical},
+				success: function(data){
+					//console.log(data);
+				}
+			});
+		}
+	}, 1);
 });
 
 /*
