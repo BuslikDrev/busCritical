@@ -257,9 +257,9 @@ var busCritical = {
 
 		if (element) {
 			// авто - tag, class, id
-			var auto = busCritical.html(element, {'all':true});
+			var auto = busCritical.html(element, {'all':busCritical.setting['html_all']});
 			// ручное - tag, class, id
-			var manual = ['font-face', 'keyframes', '*', '::after, ::before', ']'];
+			var manual = busCritical.setting['html_elements'];
 
 			for (var i in manual) {
 				auto[manual[i]] = manual[i];
