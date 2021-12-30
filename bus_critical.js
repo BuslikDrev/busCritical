@@ -212,45 +212,44 @@ var busCritical = {
 		return html;
 	},
 	'css':function(file) {
-		var styles = [];
-		var sheets = document.styleSheets;
-
-		for (var i = 0; i < sheets.length; i++) {
-			if (typeof sheets[i].cssRules == 'undefined') {
-				sheets[i].cssRules = sheets[i].rules;
+		var s, sh, e, c, y, z;
+		s = {length:0};
+		sh = document.styleSheets;
+		z = sh.length;
+		for (var i = 0; i < z; i++) {
+			if (typeof sh[i].cssRules == 'undefined') {
+				sh[i].cssRules = sh[i].rules;
 			}
-			if (sheets[i].cssRules != 'undefined') {
-				for (var i2 = 0; i2 < sheets[i].cssRules.length; i2++) {
-					var element = sheets[i].cssRules[i2];
-					//https://drafts.csswg.org/cssom/#the-cssrule-interface
-					if (element.type == 1 && element.style) {
-						var content = element.style.getPropertyValue('content');
+			if (sh[i].cssRules != 'undefined') {
+				y = sh[i].cssRules.length;
+				for (var i2 = 0; i2 < y; i2++) {
+					e = sh[i].cssRules[i2];
+					if (e.type == 1 && e.style) {
+						c = e.style.getPropertyValue('content');
 
-						if (content && content.indexOf('url') == -1) {
-							content = busCritical.toUnicodeIcon(content.replace(/^[\"]+|[\"]+$/g, ''), true);
+						if (c && c.indexOf('url') == -1) {
+							c = busCritical.toUnicodeIcon(c.replace(/^[\"]+|[\"]+$/g, ''), true);
 						}
 
-						if (content != '\\' && content.substring(0, 1) == '\\') {
+						if (c != '\\' && c.substring(0, 1) == '\\') {
 							/* fix */
-							element.style.setProperty('content', 'url(fix' + content.substring(1, content.length) + 'fix)');
-							styles[styles.length++] = element.cssText.replace(/\burl\(\"fix(.[^\)]*?)fix\"\)/, '"\\$1"') + '\r\n';
-							element.style.cssText = element.style.cssText.replace(/\burl\(\"fix(.[^\)]*?)fix\"\)/, '"\\$1"');
+							s[s.length++] = e.cssText.replace(/\bcontent: \"(.[^\"]*?)\"/, 'content: "' + c + '"') + '\r\n';
 							/* fix */
 						} else {
-							styles[styles.length++] = element.cssText + '\r\n';
+							s[s.length++] = e.cssText + '\r\n';
 						}
-					} else if (element.type == 4 && element.cssRules) {
-						if (element.cssText.indexOf('.') != -1) {
-							styles[styles.length++] = element.cssText + '\r\n';
+					} else if (e.type == 4 && e.cssRules) {
+						if (e.cssText.indexOf('.') != -1) {
+							s[s.length++] = e.cssText + '\r\n';
 						}
 					} else {
-						styles[styles.length++] = element.cssText + '\r\n';
+						s[s.length++] = e.cssText + '\r\n';
 					}
 				}
 			}
 		}
 
-		return styles;
+		return s;
 	},
 	'critical':function(search) {
 		var critical = '';
@@ -258,18 +257,12 @@ var busCritical = {
 
 		if (element) {
 			// авто - tag, class, id
-			var auto = busCritical.html(element, {'all':busCritical.setting['html_all']});
+			var auto = busCritical.html(element, {'all':true});
 			// ручное - tag, class, id
-			var manual = busCritical.setting['html_elements'];
+			var manual = ['font-face', 'keyframes', '*', '::after, ::before', ']'];
 
 			for (var i in manual) {
 				auto[manual[i]] = manual[i];
-			}
-
-			for (var i in auto) {
-				auto[i + ','] = auto[i] + ',';
-				auto[i + ':'] = auto[i] + ':';
-				auto[i] = auto[i] + ' ';
 			}
 
 			// все стили
@@ -279,11 +272,15 @@ var busCritical = {
 			//console.log(auto);
 			//console.log(1 + ' ', critical);
 
-			for (var i = 0; i < styles.length; i++) {
+			var x, y, z;
+			z = styles.length;
+			for (var i = 0; i < z; i++) {
 				search = false;
+				x = styles[i];
 
 				for (var i2 in auto) {
-					if (styles[i].indexOf(auto[i2]) != -1) {
+					y = auto[i2];
+					if (x.indexOf(y + ',') != -1 || x.indexOf(y + ':') != -1 || x.indexOf(y + ' ') != -1) {
 						search = true;
 					}
 				}
