@@ -2,7 +2,7 @@
     © 2016-2022; BuslikDrev - Усе правы захаваныя. 
     busCritical v0.4 */
 
-window.busCritical = {
+var busCritical = {
 	'setting':{
 		'html_all':false,
 		'html_elements':['font-face', 'keyframes', '*', '::after, ::before', ']']
