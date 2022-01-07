@@ -1,6 +1,6 @@
 /*  Аўтар: "БуслікДрэў" ( https://buslikdrev.by/ )
     © 2016-2022; BuslikDrev - Усе правы захаваныя. 
-    busCritical v0.4 */
+    busCritical v0.5 */
 
 var busCritical = {
 	'setting':{
@@ -64,10 +64,10 @@ var busCritical = {
 				y = sh[i].cssRules.length;
 				for (var i2 = 0; i2 < y; i2++) {
 					e = sh[i].cssRules[i2];
-					if (e.type == 1 && e.style) {
+					if (1 == 0 && e.type == 1 && e.style) {
 						c = e.style.getPropertyValue('content');
 
-						if (c && c.indexOf('url') == -1) {
+						if (c && c.indexOf('url') == -1 && c != '"/"') {
 							c = busCritical.toUnicodeIcon(c.replace(/^[\"]+|[\"]+$/g, ''));
 						}
 
@@ -78,6 +78,8 @@ var busCritical = {
 						} else {
 							s[s.length++] = e.cssText + '\r\n';
 						}
+					} else if (e.type == 1 && e.style) {
+						s[s.length++] = e.cssText + '\r\n';
 					} else if (e.type == 4 && e.cssRules) {
 						if (e.cssText.indexOf('.') != -1) {
 							s[s.length++] = e.cssText + '\r\n';
