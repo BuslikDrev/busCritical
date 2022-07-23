@@ -1,7 +1,8 @@
 /*  Аўтар: "БуслікДрэў" ( https://buslikdrev.by/ )
     © 2016-2022; BuslikDrev - Усе правы захаваныя. 
-    busCritical v0.5 */
-
+    busCritical v0.6 */
+'use strict';
+'use asm';
 var busCritical = {
 	'setting':{
 		'html_all':false,
